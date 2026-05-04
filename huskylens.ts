@@ -301,29 +301,24 @@ namespace huskylens {
      * HuskyLens get the parameter of the box corresponding to ID from result.
      * @param id to id ,eg: 1
      */
-    //%block="HuskyLens get  $number1 of ID $id frame from the result"
+    //%block="HuskyLens get parameter of frame from the result"
     //% weight=65
-    export function readeBox( id: number,number1: Content1): number {
-        let hk_y = cycle_block(id, 1);
-        let hk_x
-        if (countBlocks(id) != 0) {
-            if (hk_y != null) {
-                switch (number1) {
-                    case 1:
-                        hk_x = protocolPtr[hk_y][1]; break;
-                    case 2:
-                        hk_x = protocolPtr[hk_y][2]; break;
-                    case 3:
-                        hk_x = protocolPtr[hk_y][3]; break;
-                    case 4:
-                        hk_x = protocolPtr[hk_y][4]; break;
-                }
+    export function readAnyBox(number1: Content1): number {
+    if (countBlocks_s() == 0) return -1
+
+    // just take the first detected block
+    for (let i = 0; i < Protocol_t[1]; i++) {
+        if (protocolPtr[i][0] == protocolCommand.COMMAND_RETURN_BLOCK) {
+            switch (number1) {
+                case 1: return protocolPtr[i][1]
+                case 2: return protocolPtr[i][2]
+                case 3: return protocolPtr[i][3]
+                case 4: return protocolPtr[i][4]
             }
-            else hk_x = -1;
         }
-        else hk_x = -1;
-        return hk_x;
     }
+    return -1
+}
      /**
      * HuskyLens get the parameter of the arrow corresponding to ID from result.
      * @param id to id ,eg: 1
